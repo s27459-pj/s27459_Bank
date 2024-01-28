@@ -3,6 +3,8 @@ package pw.karczewski.bank.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import lombok.AllArgsConstructor;
 import pw.karczewski.bank.exception.AccountNotFoundException;
@@ -13,6 +15,7 @@ import pw.karczewski.bank.repository.AccountRepository;
 @Service
 @AllArgsConstructor
 public class AccountService {
+    private static final Logger log = LogManager.getLogger(AccountService.class);
     private final AccountRepository accountRepository;
 
     public List<Account> getAll() {
@@ -45,6 +48,7 @@ public class AccountService {
         if (account.getLastName() == null || account.getLastName().isEmpty())
             throw new ValidationException("lastName", "is required");
 
+        log.info("Creating new Account: {}", account);
         return accountRepository.create(account);
     }
 }
