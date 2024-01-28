@@ -9,20 +9,23 @@ import org.apache.logging.log4j.LogManager;
 
 import pw.karczewski.bank.exception.AccountNotFoundException;
 import pw.karczewski.bank.exception.ValidationException;
+import pw.karczewski.bank.model.ErrorResponse;
 
 @RestControllerAdvice
 public class ControllerAdvice {
     private static final Logger log = LogManager.getLogger(ControllerAdvice.class);
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<String> handleValidationException(ValidationException e) {
+    public ResponseEntity<ErrorResponse> handleValidationException(ValidationException e) {
         log.error("{}: {}", e.getClass().getSimpleName(), e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        var res = new ErrorResponse(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
 
     @ExceptionHandler(AccountNotFoundException.class)
-    public ResponseEntity<String> handleAccountNotFoundException(AccountNotFoundException e) {
+    public ResponseEntity<ErrorResponse> handleAccountNotFoundException(AccountNotFoundException e) {
         log.error("{}: {}", e.getClass().getSimpleName(), e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        var res = new ErrorResponse(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 }

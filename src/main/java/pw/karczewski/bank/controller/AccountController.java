@@ -28,11 +28,7 @@ public class AccountController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Account> getById(@PathVariable int id) {
-        try {
-            return ResponseEntity.ok(accountService.getById(id));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(accountService.getById(id));
     }
 
     @GetMapping("/above_balance/{balance}")
